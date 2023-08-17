@@ -8,6 +8,7 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
+  //final _formKey = GlobalKey()
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -21,13 +22,32 @@ class _AuthFormState extends State<AuthForm> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty || !value.contains('@')) {
+                          return 'Please enter a valid email address.';
+                        }
+                        return null;
+
+                      },
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(labelText: 'Email address'),
                     ),
                     TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 4) {
+                          return 'Please enter at least 4 characters';
+                        }
+                        return null;
+                      },
                       decoration: const InputDecoration(labelText: 'Username'),
                     ),
                     TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 7 ) {
+                          return 'Password must be at least 7 character long';
+                        }
+                        return null;
+                      },
                       decoration: const InputDecoration(labelText: 'Password'),
                       obscureText: true,
                     ),
