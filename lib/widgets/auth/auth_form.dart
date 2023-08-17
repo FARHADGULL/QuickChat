@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  const AuthForm(this.submitFn);
+
+  final void Function(String email, String password, String userName, bool isLogin) submitFn;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -19,6 +21,13 @@ class _AuthFormState extends State<AuthForm> {
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState!.save();
+
+      widget.submitFn(
+        userEmail,
+        userName,
+        userPassword,
+        _isLogin
+      );
 
       //Now wwe will use those userValues to interact and send our auth request to firebase
     }
