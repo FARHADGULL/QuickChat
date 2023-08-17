@@ -23,9 +23,9 @@ class _AuthFormState extends State<AuthForm> {
       _formKey.currentState!.save();
 
       widget.submitFn(
-        userEmail,
-        userName,
-        userPassword,
+        userEmail.trim(),
+        userName.trim(),
+        userPassword.trim(),
         _isLogin
       );
 
