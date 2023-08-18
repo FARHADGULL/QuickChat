@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class NewMessage extends StatefulWidget {
@@ -9,6 +10,13 @@ class NewMessage extends StatefulWidget {
 
 class _NewMessageState extends State<NewMessage> {
   var _enteredMessage = '';
+
+  void _sendMessageToFirestore() {
+    FocusScope.of(context).unfocus();
+    FirebaseFirestore.instance.collection('chat').add({
+      'text': _enteredMessage,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +36,9 @@ class _NewMessageState extends State<NewMessage> {
             ),
           ),
           IconButton(
-            onPressed: _enteredMessage.trim().isEmpty ? null : () {},
-            icon: Icon(Icons.send),
+            onPressed:
+                _enteredMessage.trim().isEmpty ? null : _sendMessageToFirestore,
+            icon: const Icon(Icons.send),
           ),
         ],
       ),
