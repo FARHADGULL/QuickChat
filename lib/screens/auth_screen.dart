@@ -12,7 +12,6 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-
   void _submitAuthForm(
     String useremail,
     String userpassword,
@@ -21,14 +20,19 @@ class _AuthScreenState extends State<AuthScreen> {
   ) async {
     UserCredential authResult;
     try {
-    if (isLogin) {
-      authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(email: useremail, password: userpassword);
-      print('Log in successful');
-    } else {
-      authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: useremail, password: userpassword);
-      print('Sgn up successful');
-      await FirebaseFirestore.instance.collection('user').doc(authResult.user!.uid).set({'username' : username, 'email' : useremail});
-    }
+      if (isLogin) {
+        authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: useremail, password: userpassword);
+        print('Log in successful');
+      } else {
+        authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: useremail, password: userpassword);
+        print('Sgn up successful');
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(authResult.user!.uid)
+            .set({'username': username, 'email': useremail});
+      }
     } on PlatformException catch (err) {
       String msg = 'please enter right credentials!';
       if (err.message != null) {
@@ -39,6 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
       print('Erorrrr $err');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

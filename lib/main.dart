@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:quick_chat/screens/auth_screen.dart';
 import 'package:quick_chat/screens/chat_screen.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());

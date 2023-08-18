@@ -9,12 +9,16 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quick Chat'),
+        backgroundColor: Colors.deepPurple,
+        title: const Text(
+          'Quick Chat',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: <Widget>[
           DropdownButton(
             icon: const Icon(
               Icons.more_vert,
-              color: Colors.grey,
+              color: Colors.white,
             ),
             items: const [
               DropdownMenuItem(
