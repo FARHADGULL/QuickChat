@@ -31,7 +31,7 @@ class _AuthScreenState extends State<AuthScreen> {
         );
         print('Sgn up successful');
         await FirebaseFirestore.instance
-            .collection('user')
+            .collection('users')
             .doc(authResult.user!.uid)
             .set(
           {'username': username, 'email': useremail},

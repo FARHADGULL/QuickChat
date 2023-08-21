@@ -51,7 +51,7 @@ class _AuthFormState extends State<AuthForm> {
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.emailAddress,
+                  //keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(labelText: 'Email address'),
                   onSaved: (userValue) {
                     userEmail = userValue!;
