@@ -26,12 +26,16 @@ class _AuthScreenState extends State<AuthScreen> {
         print('Log in successful');
       } else {
         authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: useremail, password: userpassword);
+          email: useremail,
+          password: userpassword,
+        );
         print('Sgn up successful');
         await FirebaseFirestore.instance
             .collection('user')
             .doc(authResult.user!.uid)
-            .set({'username': username, 'email': useremail});
+            .set(
+          {'username': username, 'email': useremail},
+        );
       }
     } on PlatformException catch (err) {
       String msg = 'please enter right credentials!';
