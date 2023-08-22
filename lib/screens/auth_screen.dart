@@ -51,14 +51,21 @@ class _AuthScreenState extends State<AuthScreen> {
           File(userImage.path),
         );
 
-        /*storing username and email in firestore database by creating 
+        //getting url of image stored in firebase storage
+        final url = await ref.getDownloadURL();
+
+        /*storing username, email, and image_url in firestore database by creating 
         a new collection named users and adding a document with id 
-        as user id and storing username and email in it*/
+        as user id and storing username, email, image_url in it*/
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
             .set(
-          {'username': username, 'email': useremail},
+          {
+            'username': username,
+            'email': useremail,
+            'image_url': url,
+          },
         );
       }
     } on PlatformException catch (err) {
