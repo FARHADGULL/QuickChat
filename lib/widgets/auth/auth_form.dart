@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quick_chat/widgets/pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm(this.submitFn, {super.key});
@@ -48,13 +49,7 @@ class _AuthFormState extends State<AuthForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const CircleAvatar(
-                  radius: 40,
-                ),
-                ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.image),
-                    label: const Text('Add Image')),
+                const UserImagePicker(),
                 TextFormField(
                   key: const ValueKey('email'),
                   validator: (value) {
