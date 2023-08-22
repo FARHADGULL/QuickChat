@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quick_chat/widgets/pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm(this.submitFn, {super.key});
 
-  final void Function(
-      String email, String userName, String password, bool isLogin) submitFn;
+  final void Function(String email, String userName, String password,
+      XFile image, bool isLogin) submitFn;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -17,10 +18,25 @@ class _AuthFormState extends State<AuthForm> {
   var userEmail = '';
   var userName = '';
   var userPassword = '';
+  XFile? userImageFile;
+
+  void _pickedImage(XFile image) {
+    userImageFile = image;
+  }
 
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    if (userImageFile == null && !_isLogin) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Please pick an image.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
     if (isValid) {
       _formKey.currentState!.save();
 
@@ -30,7 +46,12 @@ class _AuthFormState extends State<AuthForm> {
       print('Is Login: $_isLogin');
 
       widget.submitFn(
-          userEmail.trim(), userName.trim(), userPassword.trim(), _isLogin);
+        userEmail.trim(),
+        userName.trim(),
+        userPassword.trim(),
+        userImageFile!,
+        _isLogin,
+      );
 
       //Now wwe will use those userValues to interact and send our auth request to firebase
     }
@@ -49,7 +70,7 @@ class _AuthFormState extends State<AuthForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const UserImagePicker(),
+                if (!_isLogin) UserImagePicker(_pickedImage),
                 TextFormField(
                   key: const ValueKey('email'),
                   validator: (value) {
