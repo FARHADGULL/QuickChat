@@ -40,7 +40,7 @@ class MessageBubble extends StatelessWidget {
             horizontal: 8,
           ),
           child: Column(
-            children: <Widget>[
+            children: [
               FutureBuilder(
                 future: Future.value(FirebaseFirestore.instance
                     .collection('users')
