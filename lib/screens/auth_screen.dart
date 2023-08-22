@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -35,15 +37,23 @@ class _AuthScreenState extends State<AuthScreen> {
           email: useremail,
           password: userpassword,
         );
-        print('Sgn up successful');
+        print('Sign up successful');
 
+        //getting reference/pointer to firebase storage to store image
         final ref = FirebaseStorage.instance
             .ref()
             .child('user_images')
-            .child(authResult.user!.uid + '.jpg');
+            .child('${authResult.user!.uid} .jpg');
 
-        //upload XFile image to firebase storage
+        //uploading XFile image to firebase storage
+        await ref.putFile(
+          //converting XFile to File
+          File(userImage.path),
+        );
 
+        /*storing username and email in firestore database by creating 
+        a new collection named users and adding a document with id 
+        as user id and storing username and email in it*/
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)

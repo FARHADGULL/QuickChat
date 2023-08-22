@@ -53,7 +53,7 @@ class _AuthFormState extends State<AuthForm> {
         _isLogin,
       );
 
-      //Now wwe will use those userValues to interact and send our auth request to firebase
+      //Now wwe will use those userValues to interact and send our auth request to firebase auth
     }
   }
 

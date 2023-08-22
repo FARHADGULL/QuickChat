@@ -22,7 +22,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
     setState(() {
       pickedImage = pickedImageFile;
     });
-    widget.imagePickFn(pickedImageFile!);
+    widget.imagePickFn(pickedImage!);
   }
 
   @override
