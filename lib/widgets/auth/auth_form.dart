@@ -40,7 +40,7 @@ class _AuthFormState extends State<AuthForm> {
       return;
     }
     //isValid means all the validators in the form are satisfied
-    if (isValid) {
+    if (isValid || userImageFile == null) {
       _formKey.currentState!.save();
 
       print('User Email: $userEmail');
