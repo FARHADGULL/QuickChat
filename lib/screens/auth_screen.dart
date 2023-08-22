@@ -14,10 +14,13 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   void _submitAuthForm(
     String useremail,
-    String userpassword,
     String username,
+    String userpassword,
     bool isLogin,
   ) async {
+    print('userrr Email: ${useremail}');
+    print('Userrr Name: ${isLogin ? 'N/A' : username}');
+    print('userrr Password: $userpassword');
     UserCredential authResult;
     try {
       if (isLogin) {

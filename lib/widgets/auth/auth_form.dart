@@ -4,7 +4,7 @@ class AuthForm extends StatefulWidget {
   const AuthForm(this.submitFn, {super.key});
 
   final void Function(
-      String email, String password, String userName, bool isLogin) submitFn;
+      String email, String userName, String password, bool isLogin) submitFn;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -22,6 +22,11 @@ class _AuthFormState extends State<AuthForm> {
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState!.save();
+
+      print('User Email: $userEmail');
+      print('Username: ${_isLogin ? 'N/A' : userName}');
+      print('User Password: $userPassword');
+      print('Is Login: $_isLogin');
 
       widget.submitFn(
           userEmail.trim(), userName.trim(), userPassword.trim(), _isLogin);
