@@ -27,7 +27,9 @@ class _AuthFormState extends State<AuthForm> {
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-
+    //if user is not logged in and userImageFile is null
+    //then show snackbar and return from this function
+    //without doing anything else
     if (userImageFile == null && !_isLogin) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -37,6 +39,7 @@ class _AuthFormState extends State<AuthForm> {
       );
       return;
     }
+    //isValid means all the validators in the form are satisfied
     if (isValid) {
       _formKey.currentState!.save();
 
@@ -51,9 +54,9 @@ class _AuthFormState extends State<AuthForm> {
         userPassword.trim(),
         userImageFile!,
         _isLogin,
-      );
+      ); //calling the submitFn function which is passed as a parameter to the widget named AuthForm
 
-      //Now wwe will use those userValues to interact and send our auth request to firebase auth
+      //Now we will use these userValues to interact and send our auth request to firebase auth
     }
   }
 

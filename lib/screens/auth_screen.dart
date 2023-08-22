@@ -39,13 +39,13 @@ class _AuthScreenState extends State<AuthScreen> {
         );
         print('Sign up successful');
 
-        //getting reference/pointer to firebase storage to store image
+        //first getting reference/pointer to firebase storage to store image
         final ref = FirebaseStorage.instance
             .ref()
             .child('user_images')
             .child('${authResult.user!.uid} .jpg');
 
-        //uploading XFile image to firebase storage
+        //then uploading XFile image to firebase storage
         await ref.putFile(
           //converting XFile to File
           File(userImage.path),
