@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,22 @@ class _ChatScreenState extends State<ChatScreen> {
       print('My on Resume (background): ${message}');
       return;
     }); //when app is in background or terminated and we receive a message then this will be called
+
+    //token is used to send notification to a specific device
+
+    FirebaseMessaging.instance.getToken().then((token) {
+      print('My token: ${token}');
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .update({
+        'token': token,
+      });
+    }); /*this will be called when app is opened for the first time and 
+    then it will not be called again until the app is uninstalled and 
+    installed again on the device or the token is changed by the firebase 
+    messaging instance (which is very rare) or the token is deleted from the 
+    firebase messaging instance (which is also very rare)*/
 
     super.initState();
   }
