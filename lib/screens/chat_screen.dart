@@ -1,10 +1,35 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_chat/widgets/chat/messages.dart';
 import 'package:quick_chat/widgets/chat/new_message.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    //FirebaseMessaging.instance.requestPermission(); //for iOS only
+    FirebaseMessaging.instance
+        .getInitialMessage(); //when app is in background and we open the app from the notification then this will be called
+
+    FirebaseMessaging.onMessage.listen((message) {
+      print(message);
+      return;
+    }); //when app is in foreground and we receive a message then this will be called
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print(message);
+      return;
+    }); //when app is in background and we receive a message then this will be called
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
