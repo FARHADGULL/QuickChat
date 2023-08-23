@@ -15,18 +15,20 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     //FirebaseMessaging.instance.requestPermission(); //for iOS only
-    FirebaseMessaging.instance
+    final fbm = FirebaseMessaging.instance
         .getInitialMessage(); //when app is in background and we open the app from the notification then this will be called
 
+    print('My get initial message: ${fbm}');
+
     FirebaseMessaging.onMessage.listen((message) {
-      print(message);
+      print('My on Message (foreground): ${message}');
       return;
     }); //when app is in foreground and we receive a message then this will be called
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print(message);
+      print('My on Resume (background): ${message}');
       return;
-    }); //when app is in background and we receive a message then this will be called
+    }); //when app is in background or terminated and we receive a message then this will be called
 
     super.initState();
   }
