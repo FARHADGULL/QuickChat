@@ -27,8 +27,11 @@ class _NewMessageState extends State<NewMessage> {
       'userId': user?.uid,
       'username': userData['username'],
       'userImage': userData['image_url'],
-    }); //adding message to firestore database in chat collection with fields text, createdAt, userId, username, userImage and their values as entered by user in the chat screen
+    }); //adding message to firestore database in chat collection with fields text, createdAt, userId, username, userImage_url and their values as entered by user in the chat screen
     _controller.clear();
+    setState(() {
+      _enteredMessage = '';
+    });
   }
 
   @override
