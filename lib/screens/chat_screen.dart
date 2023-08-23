@@ -22,19 +22,19 @@ class _ChatScreenState extends State<ChatScreen> {
     // print('My get initial message: ${fbm}');
 
     FirebaseMessaging.onMessage.listen((message) {
-      print('My on Message (foreground): ${message}');
+      print('My on Message (foreground): $message');
       return;
     }); //when app is in foreground and we receive a message then this will be called
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('My on Resume (background): ${message}');
+      print('My on Resume (background): $message');
       return;
     }); //when app is in background or terminated and we receive a message then this will be called
 
     //token is used to send notification to a specific device
 
     FirebaseMessaging.instance.getToken().then((token) {
-      print('My token: ${token}');
+      print('My token: $token');
       FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser?.uid)
