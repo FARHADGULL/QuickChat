@@ -131,6 +131,26 @@ class _AuthFormState extends State<AuthForm> {
                       ? 'Create new account'
                       : 'I already have an account'),
                 ),
+                if (!_isLogin)
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.g_mobiledata),
+                          SizedBox(width: 10),
+                          Text('Sign in with Google'),
+                        ],
+                      ),
+                    ),
+                  )
               ],
             ),
           ),
