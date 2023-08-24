@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quick_chat/widgets/pickers/user_image_picker.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm(this.submitFn, {super.key});
@@ -18,7 +21,7 @@ class _AuthFormState extends State<AuthForm> {
   var userEmail = '';
   var userName = '';
   var userPassword = '';
-  XFile? userImageFile;
+  XFile userImageFile = XFile('');
 
   void _pickedImage(XFile image) {
     userImageFile = image;
@@ -30,7 +33,7 @@ class _AuthFormState extends State<AuthForm> {
     //if user is not logged in and userImageFile is null
     //then show snackbar and return from this function
     //without doing anything else
-    if (userImageFile == null && !_isLogin) {
+    if (!_isLogin && userImageFile.path.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Please pick an image.'),
@@ -48,11 +51,13 @@ class _AuthFormState extends State<AuthForm> {
       print('User Password: $userPassword');
       print('Is Login: $_isLogin');
 
+      //final image = _isLogin ? null : userImageFile!;
+
       widget.submitFn(
         userEmail.trim(),
         userName.trim(),
         userPassword.trim(),
-        userImageFile!,
+        userImageFile,
         _isLogin,
       ); //calling the submitFn function which is passed as a parameter to the widget named AuthForm
 
@@ -133,7 +138,48 @@ class _AuthFormState extends State<AuthForm> {
                 ),
                 if (!_isLogin)
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      try {
+                        //TODO: Implement Google Sign In
+                        print('Google Sign In');
+
+                        final GoogleSignInAccount? googleUser =
+                            await GoogleSignIn().signIn();
+
+                        if (googleUser != null) {
+                          final GoogleSignInAuthentication googleAuth =
+                              await googleUser.authentication;
+
+                          print('Google User: $googleUser');
+                          print('Google Auth: $googleAuth');
+
+                          final credential = GoogleAuthProvider.credential(
+                            accessToken: googleAuth.accessToken,
+                            idToken: googleAuth.idToken,
+                          );
+
+                          final authResult = await FirebaseAuth.instance
+                              .signInWithCredential(credential);
+
+                          print('Google Sign In Successful');
+
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(authResult.user!.uid)
+                              .set({
+                            'username': googleUser.displayName ?? '',
+                            'email': googleUser.email,
+                            'image_url': googleUser.photoUrl ?? '',
+                          });
+
+                          print('Google User added to Firestore');
+                        } else {
+                          print('Google Sign In was canceled');
+                        }
+                      } catch (error) {
+                        print('Error during Google Sign In: $error');
+                      }
+                    },
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -150,7 +196,7 @@ class _AuthFormState extends State<AuthForm> {
                         ],
                       ),
                     ),
-                  )
+                  ),
               ],
             ),
           ),
